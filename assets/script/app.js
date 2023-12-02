@@ -144,21 +144,6 @@ const wordsArr = [
   'escape',
 ];
 
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 let numCorrectWords = 0;
 
 let initialSeconds = 99;
@@ -253,11 +238,12 @@ function resetGame() {
 // Function to create date
 function getDate() {
   const date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth();
-  let year = date.getFullYear();
-
-  return `${months[month].slice(0, 3)} ${day}, ${year}`;
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+  return date.toLocaleTimeString('en-US', options);
 }
 
 // Function to calculate percentage
