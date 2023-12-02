@@ -15,4 +15,4 @@ The goal is to achieve a high score by typing the correct words within a set tim
 - Click "Restart" to play again after completing the quest.
 - View your score on the Score Board modal after the game ends.
 
-Click [here](https://gurlinkaur23.github.io/qwerty-quest/) to see the live demo of the game.
+Click [here](https://gurlinkaur23.github.io/qwerty-quest/) to see the live demonstration of the game.
