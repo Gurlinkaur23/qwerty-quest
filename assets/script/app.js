@@ -15,9 +15,7 @@ const userWord = select('.user-word');
 const modal = select('.modal');
 const overlay = select('.overlay');
 const btnCloseModal = select('.close-modal');
-const modalDate = select('.modal-date');
-const modalHits = select('.modal-hits');
-const modalPercentage = select('.modal-percentage');
+const scoreBoardDiv = select('.score-board-div');
 
 /* - - - - - - Main code - - - - - - - */
 
@@ -146,11 +144,14 @@ const wordsArr = [
 
 let numCorrectWords = 0;
 
-let initialSeconds = 99;
+let initialSeconds = 20;
 let secondsInterval = '';
 
 let currentWord = '';
 let enteredWordsArr = [];
+
+let scoresArr = loadScores();
+let isGameActive = false;
 
 // Display the words from the wordsArr
 function displayRandomWord() {
@@ -158,17 +159,19 @@ function displayRandomWord() {
     word => !enteredWordsArr.includes(word)
   );
 
-  const randomIndex = Math.floor(Math.random() * remainingWords.length);
-  const randomWord = remainingWords[randomIndex];
-
-  enteredWordsArr.push(randomWord);
-
   if (remainingWords.length === 0) {
     enteredWordsArr = [];
     endGame();
   }
 
-  word.innerText = randomWord;
+  const randomIndex = Math.floor(Math.random() * remainingWords.length);
+  const randomWord = remainingWords[randomIndex];
+
+  enteredWordsArr.push(randomWord);
+
+  if (isGameActive) {
+    word.innerText = randomWord;
+  }
   return randomWord;
 }
 
@@ -197,6 +200,8 @@ function toggleBtn() {
 
 // Start the game
 function startGame() {
+  isGameActive = true;
+  seconds.innerText = 20;
   secondsInterval = setInterval(secondsLeft, 1000);
   displayRandomWord();
   userWord.focus();
@@ -213,25 +218,27 @@ function startGame() {
 
 // Restart the game
 function restartGame() {
+  isGameActive = true;
   clearInterval(secondsInterval);
   playSound.currentTime = 0;
-  seconds.innerText = 99;
+  seconds.innerText = 20;
   startGame();
   toggleBtn();
 }
 
 // End the game
 function endGame() {
+  isGameActive = false;
   playSound.pause();
   // To reset the playback from the beginning
   playSound.currentTime = 0;
   toggleBtn();
-  wordDiv.innerText = '';
+  word.textContent = '';
   userWord.value = '';
   userWord.disabled = true;
 
-  const gameScore = new Score(getDate(), numCorrectWords, calcPercentage());
-  displayModal(gameScore);
+  createScoreObject();
+  displayScoreBoard();
 
   resetGame();
 }
@@ -241,7 +248,76 @@ function resetGame() {
   hits.innerText = 'Hits: 0';
   userWord.value = '';
   numCorrectWords = 0;
-  initialSeconds = 99;
+  initialSeconds = 20;
+}
+
+// Function to create a score object
+function createScoreObject() {
+  const gameDate = getDate();
+  const gameHits = numCorrectWords;
+  const gamePercentage = calcPercentage();
+
+  const gameScoreObject = {
+    date: gameDate,
+    hits: gameHits,
+    percentage: gamePercentage,
+  };
+
+  scoresArr.push(gameScoreObject);
+  updateScoreObject();
+}
+
+function updateScoreObject() {
+  // Sort the array based on highest hits
+  scoresArr.sort((a, b) => {
+    if (b.hits === a.hits) return new Date(b.date) - new Date(a.date);
+
+    return b.hits - a.hits;
+  });
+  // Splice the array for top 9 hits
+  scoresArr.splice(9);
+
+  saveScores();
+}
+
+// Function to display the score board
+function displayScoreBoard() {
+  scoresArr = loadScores();
+  scoreBoardDiv.innerHTML = '';
+  createScoreBoard(scoresArr);
+  openModal();
+}
+
+function createScoreBoard(array) {
+  if (array.length > 0) {
+    array.forEach((obj, index) => {
+      const scoreInfoDiv = document.createElement('div');
+      scoreInfoDiv.classList.add('score-info');
+
+      const indexInfo = document.createElement('p');
+      const hitsInfo = document.createElement('p');
+      const dateInfo = document.createElement('p');
+
+      indexInfo.innerText = `#${index + 1}`;
+      hitsInfo.innerText = `${obj.hits.toString().padStart(2, '0')} hits`;
+      dateInfo.innerText = obj.date;
+
+      scoreInfoDiv.appendChild(indexInfo);
+      scoreInfoDiv.appendChild(hitsInfo);
+      scoreInfoDiv.appendChild(dateInfo);
+
+      scoreBoardDiv.appendChild(scoreInfoDiv);
+    });
+  }
+}
+
+function saveScores() {
+  localStorage.setItem('scores-info', JSON.stringify(scoresArr));
+}
+
+function loadScores() {
+  const storedScores = localStorage.getItem('scores-info');
+  return JSON.parse(storedScores) || [];
 }
 
 // Function to create date
@@ -252,7 +328,7 @@ function getDate() {
     month: 'short',
     day: 'numeric',
   };
-  return date.toLocaleDateString('en-US', options);
+  return date.toLocaleTimeString('en-US', options);
 }
 
 // Function to calculate percentage
@@ -271,14 +347,6 @@ function closeModal() {
   modal.classList.add('hidden');
   overlay.classList.add('hidden');
   userWord.value = '';
-}
-
-function displayModal(score) {
-  modalDate.innerText = `Date: ${score.date}`;
-  modalHits.innerText = `Hits: ${score.hits}`;
-  modalPercentage.innerText = `Percentage: ${score.percentage}%`;
-
-  openModal();
 }
 
 /* - - - - - - Set the timer - - - - - - - */
@@ -317,4 +385,4 @@ onEvent('click', btnCloseModal, () => {
 
 onEvent('click', overlay, () => {
   closeModal();
-})
+});

@@ -83,7 +83,7 @@ body {
 
 .word-div {
   height: 110px;
-  width: 350px;
+  width: 380px;
   margin: 10px auto;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -114,13 +114,17 @@ body {
   color: #6e257d;
 }
 
+.score-board {
+  margin-top: 10px;
+}
+
 .modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 320px;
-  height: auto;
+  width: 420px;
+  height: 480px;
   background: linear-gradient(to bottom right, #dda5b2, #965da1);
   padding: 20px;
   border-radius: 5px;
@@ -145,22 +149,28 @@ body {
   color: #6e257d;
   font-size: 30px;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-bottom: 30px;
   background-color: rgba(255, 255, 255, 0.1);
-
 }
 
-.modal p {
-  color: #fff;
-  letter-spacing: 0.5px;
-  margin: 15px auto;
-  font-size: 18px;
+.score-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #9557a1;
   transition: background-color 0.3s ease-in-out;
+  margin-top: 10px;
 }
 
-.modal p:hover {
+.score-info:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.score-info p {
+  color: #fff;
+  letter-spacing: 0.5px;
+  font-size: 18px;
 }
 
 .overlay {
@@ -192,7 +202,7 @@ body {
 
 /* Responsive */
 @media screen and (max-width: 800px) {
-  .title{
+  .title {
     flex-direction: column;
   }
 
