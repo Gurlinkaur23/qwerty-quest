@@ -199,6 +199,13 @@ function toggleBtn() {
 function startGame() {
   secondsInterval = setInterval(secondsLeft, 1000);
   displayRandomWord();
+  userWord.focus();
+  userWord.disabled = false;
+
+  setTimeout(() => {
+    userWord.focus();
+  }, 100);
+
   playSound.play();
   resetGame();
   toggleBtn();
@@ -208,8 +215,9 @@ function startGame() {
 function restartGame() {
   clearInterval(secondsInterval);
   playSound.currentTime = 0;
-  toggleBtn();
+  seconds.innerText = 99;
   startGame();
+  toggleBtn();
 }
 
 // End the game
@@ -220,6 +228,7 @@ function endGame() {
   toggleBtn();
   wordDiv.innerText = '';
   userWord.value = '';
+  userWord.disabled = true;
 
   const gameScore = new Score(getDate(), numCorrectWords, calcPercentage());
   displayModal(gameScore);
@@ -243,7 +252,7 @@ function getDate() {
     month: 'short',
     day: 'numeric',
   };
-  return date.toLocaleTimeString('en-US', options);
+  return date.toLocaleDateString('en-US', options);
 }
 
 // Function to calculate percentage
@@ -305,3 +314,7 @@ onEvent('input', userWord, () => {
 onEvent('click', btnCloseModal, () => {
   closeModal();
 });
+
+onEvent('click', overlay, () => {
+  closeModal();
+})

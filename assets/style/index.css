@@ -37,7 +37,7 @@ body {
 }
 
 .title h1 {
-  font-size: 60px;
+  font-size: 40px;
   font-family: 'Nosifer', sans-serif;
 }
 
@@ -76,24 +76,24 @@ body {
 }
 
 .typing {
-  margin: 20px;
+  margin: 10px;
   width: auto;
   text-align: center;
 }
 
 .word-div {
-  height: 90px;
-  width: 340px;
+  height: 110px;
+  width: 350px;
   margin: 10px auto;
   margin-bottom: 20px;
   border-radius: 5px;
-  background-color: #fdf1f4;
+  background: linear-gradient(to bottom right, #d98498, #7f368e);
 }
 
 .word {
-  color: #6e257d;
-  font-size: 50px;
-  line-height: 80px;
+  color: #fff;
+  font-size: 60px;
+  line-height: 110px;
 }
 
 .hits {
@@ -105,13 +105,13 @@ body {
 .user-word {
   height: 60px;
   width: 250px;
-  background-color: #fdf1f4;
+  background-color: #e3cee7;
   border-radius: 5px;
   margin: 10px auto;
-  padding : 20px;
+  padding: 20px;
   text-align: center;
   font-size: 30px;
-  color: #e04a6d;
+  color: #6e257d;
 }
 
 .modal {
@@ -119,27 +119,48 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 340px;
+  width: 320px;
   height: auto;
-  background-color: #fdf1f4;
+  background: linear-gradient(to bottom right, #dda5b2, #965da1);
   padding: 20px;
   border-radius: 5px;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 0.2);
   z-index: 10;
+  animation: 0.2s linear anim;
+}
+
+@keyframes anim {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .modal h2 {
   text-align: center;
-  color: #e04a6d;
+  color: #6e257d;
   font-size: 30px;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+
 }
 
 .modal p {
-  color: #6e257d;
+  color: #fff;
   letter-spacing: 0.5px;
-  margin: 10px auto;
-  font-size: 18px
+  margin: 15px auto;
+  font-size: 18px;
+  border-bottom: 1px solid #9557a1;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.modal p:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .overlay {
@@ -156,10 +177,26 @@ body {
 
 .close-modal {
   position: fixed;
-  top: 8px;
-  right: 8px;
-  font-size: 20px;
-  color: #555;
+  top: 6px;
+  right: 6px;
+  font-size: 28px;
+  color: #fff;
   cursor: pointer;
-  background-color: #fdf1f4;
+  background-color: transparent;
+  transition: color 0.3s ease-in-out;
+}
+
+.close-modal:hover {
+  color: #6e257d;
+}
+
+/* Responsive */
+@media screen and (max-width: 800px) {
+  .title{
+    flex-direction: column;
+  }
+
+  .title h1 {
+    font-size: 28px;
+  }
 }
